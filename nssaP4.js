@@ -25,10 +25,10 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
     // Convert sheets to JSON objects
     const sourceData = XLSX.utils.sheet_to_json(sourceWorksheet, {
         defval: "N/A",
-      });
+    });
     const destinationData = XLSX.utils.sheet_to_json(destinationWorksheet, {
         defval: "N/A",
-      });
+    });
     // console.log(sourceData[0].NationalIDNumber)
 
     // const sourceColumnIndex = sourceData[0].NationalIDNumber;
@@ -42,17 +42,17 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
 
     let nonMatching = 0
 
-        //matching
+    //matching
     for (let i = 0; i < sourceData.length; i++) {
         const sourceCellValue = sourceData[i].NationalIDNumber.replace(/-/g, "");
         const sourceSurname = sourceData[i].Surname;
         const sourceFirst = sourceData[i].Firstname;
-        const sourceBirth =sourceData[i].BirthDate;
+        const sourceBirth = sourceData[i].BirthDate;
         const sourceStart = sourceData[i].StartDate;
         const sourceName1 = sourceData[i].Firstname + sourceData[i].Surname
         const sourceName = sourceName1.toUpperCase()
         let foundMatch = false
-        
+
         // console.log(sourceCellValue)
 
         for (let j = 0; j < destinationData.length; j++) {
@@ -74,10 +74,10 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
             //     console.log('value is empty')
             // }
 
-            if (sourceCellValue === destinationCellValue ) {
+            if (sourceCellValue === destinationCellValue) {
                 preMatchedRows.push(sourceData[i])
                 // matchedRows.push(sourceData[i]);
-                
+
                 if (sourceName === destinationName) {
                     matchedRows.push(sourceData[i]);
                     foundMatch = true
@@ -87,13 +87,13 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
 
                 break;
             }
-            
+
         }
-        if (!foundMatch ) {
+        if (!foundMatch) {
             notRegistered.push(sourceData[i]);
         }
 
-         
+
     }
 
     //in destination but not source
@@ -115,7 +115,7 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
             const sourceStart = sourceData[j].StartDate;
             const sourceName1 = sourceData[j].Firstname + sourceData[j].Surname
             const sourceName = sourceName1.toUpperCase()
-        //destinationCellValue === sourceCellValue || sourceSurname === destinationSurname || sourceBirth === destinationBirth
+            //destinationCellValue === sourceCellValue || sourceSurname === destinationSurname || sourceBirth === destinationBirth
 
             if (destinationCellValue === sourceCellValue || destinationName === sourceName) {
                 foundMatch = true;
@@ -136,7 +136,7 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
     const terminatedWorkbook = XLSX.utils.book_new();
 
     // Create worksheets for exporting
-    const consolidatedWorksheet = XLSX.utils.json_to_sheet([ ...matchedRows]);
+    const consolidatedWorksheet = XLSX.utils.json_to_sheet([...matchedRows]);
     const notRegisteredWorksheet = XLSX.utils.json_to_sheet([...notRegistered]);
     const terminatedWorksheet = XLSX.utils.json_to_sheet([...terminated]);
 
@@ -150,7 +150,7 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
     XLSX.writeFile(notRegisteredWorkbook, 'Not-Registered.xlsx');
     XLSX.writeFile(terminatedWorkbook, 'Terminated.xlsx');
 
-    res.send('Exported Consolidated.xlsx, Not-Registered.xlsx and Terminated.xlsx' );
+    console.log('Exported Consolidated.xlsx, Not-Registered.xlsx and Terminated.xlsx');
 
 }
 
@@ -167,20 +167,20 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
 //     input: process.stdin,
 //     output: process.stdout
 //   });
-  
+
 //   rl.question('Please enter the path to your P4 file: ', (sourceFile) => {
 
 //     rl.question('Now add your Template file: ', (destinationFile) => {
 //         const sourceColumn = 'NationalIDNumber';
 //         const destinationColumn = 'NationalIDNumber';
-      
+
 //         consolidateExcelFiles(sourceFile, destinationFile, sourceColumn, destinationColumn);
-      
+
 //         rl.close();
 //       });
 //     })
-    
+
 
 // consolidateExcelFiles(sourceFile, destinationFile, sourceColumn, destinationColumn);
 
-module.exports = {consolidateExcelFiles}
+module.exports = { consolidateExcelFiles }
