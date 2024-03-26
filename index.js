@@ -8,6 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 8888;
 const fs = require('fs');
 const multer = require('multer');
+const path = require('path')
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -33,7 +34,7 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 });
 
-app.post('/data', (req, res) => {
+app.get('/', (req, res) => {
     console.log(req.body)
     console.log(req.body.length)
     // const data = req.body
@@ -92,10 +93,6 @@ app.post('/upload', upload.array('file'), (req, res) => {
         const fileName = file.originalname;
         const filePath = file.path;
 
-        // console.log(req.files.filename)
-
-        // const sourceFile
-
         // Read the uploaded file
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
@@ -103,5 +100,48 @@ app.post('/upload', upload.array('file'), (req, res) => {
             }
 
         });
+    });
+});
+
+app.get('/consolidated', (req, res) => {
+    const fileName = req.params.fileName;
+    const filePath = path.join(__dirname, './', 'Consolidated.xlsx'); // Adjust path to your file directory
+
+    res.download(filePath, fileName, (err) => {
+        if (err) {
+            console.error('Error downloading file:', err);
+            return res.status(500).send('Error downloading file');
+        }
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            } else {
+                console.log('File deleted successfully:', filePath);
+            }
+        });
+    });
+});
+
+app.get('/non-reg', (req, res) => {
+    const fileName = req.params.fileName;
+    const filePath = path.join(__dirname, './', 'Not-Registered.xlsx'); // Adjust path to your file directory
+
+    res.download(filePath, fileName, (err) => {
+        if (err) {
+            console.error('Error downloading file:', err);
+            return res.status(500).send('Error downloading file');
+        }
+    });
+});
+app.get('/termi', (req, res) => {
+    const fileName = req.params.fileName;
+    const filePath = path.join(__dirname, './', 'Terminated.xlsx'); // Adjust path to your file directory
+
+    res.download(filePath, fileName, (err) => {
+        if (err) {
+            console.error('Error downloading file:', err);
+            return res.status(500).send('Error downloading file');
+        }
     });
 });

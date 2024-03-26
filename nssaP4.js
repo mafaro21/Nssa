@@ -152,6 +152,7 @@ function consolidateExcelFiles(sourceFile, destinationFile, res) {
 
     console.log('Exported Consolidated.xlsx, Not-Registered.xlsx and Terminated.xlsx');
     res.send('Exported Consolidated.xlsx, Not-Registered.xlsx and Terminated.xlsx');
+    // res.sendFile('./Consolidated.xlsx')
 
 }
 
