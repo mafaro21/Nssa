@@ -4,7 +4,7 @@ const readline = require('readline');
 // import sourceFile from 'NSSA P4 CHICKEN INN FC.Xls'
 // import destinationFile from './P4/TempChik.xlsx'
 
-function consolidateExcelFiles(sourceFile, destinationFile) {
+function consolidateExcelFiles(sourceFile, destinationFile, res) {
     const sourceWorkbook = XLSX.readFile(sourceFile);
     const destinationWorkbook = XLSX.readFile(destinationFile);
 
@@ -12,10 +12,10 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
     const sourceSheetName = sourceWorkbook.SheetNames[0];
     const destinationSheetName = destinationWorkbook.SheetNames[0];
     // console.log('\n' + sourceFile + ' has ' + sourceSheetName + ' sheet(s) select the one you want to use: ')
-    console.log(sourceWorkbook.SheetNames)
+    // console.log(sourceWorkbook.SheetNames)
     // console.log('destination sheet', destinationSheetName)
     // console.log('\n' + destinationFile + ' has ' + destinationSheetName + ' sheet(s) select the one you want to use: ')
-    console.log(destinationWorkbook.SheetNames)
+    // console.log(destinationWorkbook.SheetNames)
 
     const sourceWorksheet = sourceWorkbook.Sheets[sourceSheetName];
     const destinationWorksheet = destinationWorkbook.Sheets[destinationSheetName];
@@ -68,7 +68,7 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
             const destinationName = destinationName1.toUpperCase()
             //sourceCellValue === destinationCellValue || sourceSurname === destinationSurname || sourceBirth === destinationBirth
 
-            console.log(destinationCellValue)
+            // console.log(destinationCellValue)
 
             // if (destinationCellValue.match(/^undefined/g)) {
             //     console.log('value is empty')
@@ -151,36 +151,9 @@ function consolidateExcelFiles(sourceFile, destinationFile) {
     XLSX.writeFile(terminatedWorkbook, 'Terminated.xlsx');
 
     console.log('Exported Consolidated.xlsx, Not-Registered.xlsx and Terminated.xlsx');
+    res.send('Exported Consolidated.xlsx, Not-Registered.xlsx and Terminated.xlsx');
 
 }
 
-//source is P4 and destination is template
-
-//files that are needed
-// const sourceFile = '../NSSA/profeeds/NSSA P4 Profeeds FEB.xls';
-// const destinationFile = '../NSSA/profeeds/Template 0164125N-08032024113117.xlsx';
-// const sourceColumn = 'NationalIDNumber';
-// const destinationColumn = 'NationalIDNumber';
-
-//user input for adding the files
-// const rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-//   });
-
-//   rl.question('Please enter the path to your P4 file: ', (sourceFile) => {
-
-//     rl.question('Now add your Template file: ', (destinationFile) => {
-//         const sourceColumn = 'NationalIDNumber';
-//         const destinationColumn = 'NationalIDNumber';
-
-//         consolidateExcelFiles(sourceFile, destinationFile, sourceColumn, destinationColumn);
-
-//         rl.close();
-//       });
-//     })
-
-
-// consolidateExcelFiles(sourceFile, destinationFile, sourceColumn, destinationColumn);
 
 module.exports = { consolidateExcelFiles }
